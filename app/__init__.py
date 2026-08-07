@@ -21,6 +21,11 @@ def create_app():
     app.register_blueprint(main_bp)
     from .auth import auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
+    # Context processors
+    @app.context_processor
+    def inject_globals():
+        return dict(current_year=2026)
+
     # Error handlers
     @app.errorhandler(404)
     def not_found(e):

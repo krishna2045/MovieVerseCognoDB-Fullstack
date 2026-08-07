@@ -75,7 +75,29 @@ def case_study():
 def profile():
     return render_template('profile.html', current_year=2026)
 
+@bp.route('/movies')
+@login_required
+def movies():
+    all_movies = get_all_movies()
+    return render_template('movies.html', movies=all_movies, current_year=2026)
+
 # ---------- API Endpoints ----------
+@bp.route('/api/search')
+@login_required
+def api_search():
+    query_text = request.args.get('q', '') or request.args.get('movie', '')
+    results = search_movie(query_text)
+    return jsonify(results)
+
+@bp.route('/api/stats')
+@login_required
+def api_stats():
+    movies_list = get_all_movies()
+    return jsonify({
+        'total_movies': len(movies_list) if movies_list else 0,
+        'status': 'online'
+    })
+
 @bp.route('/api/recommendations/<title>')
 @login_required
 def api_recommendations(title):
