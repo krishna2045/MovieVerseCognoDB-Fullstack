@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block title %}Login - MovieVerse Cinema Platform{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Full-Screen Cinematic Loading Overlay -->
+<div id="loading-overlay" class="loading-overlay {% if show_loading %}active{% endif %}">
+  <div class="loading-content text-center">
+    <div class="logo-loading mb-3">
+      <h1 class="logo-text display-3 fw-bold"><span class="text-pink">Movie</span><span class="text-gradient">Verse</span></h1>
+    </div>
+    <div class="purple-spinner-wrapper mb-4">
+      <div class="purple-ring-loader"></div>
+      <i class="fa-solid fa-clapperboard spinner-center-icon text-pink"></i>
+    </div>
+    <h3 class="loading-text text-light fw-bold mb-2">Loading your cinematic experience...</h3>
+    <p class="text-secondary small">Connecting to CognoDB Knowledge Graph Engine</p>
+  </div>
+</div>
+
+<div class="login-page">
+  <!-- Left side with branding and features -->
+  <div class="login-left">
+    <div class="logo mb-2">
+      <h1 class="logo-movie"><span class="text-pink">Movie</span><span class="text-gradient">Verse</span></h1>
+    </div>
+    <h2 class="welcome-title">Welcome Back</h2>
+    <p class="welcome-subtitle">Sign in to continue your cinematic journey and receive personalized AI movie recommendations.</p>
+
+    <!-- Animated Cinema Floating Elements -->
+    <div class="illustration">
+      <i class="fa-solid fa-film illustration-item reel"></i>
+      <i class="fa-solid fa-popcorn illustration-item popcorn"></i>
+      <i class="fa-solid fa-clapperboard illustration-item clapper"></i>
+      <i class="fa-solid fa-ticket-simple illustration-item tickets"></i>
+    </div>
+
+    <!-- Feature Cards -->
+    <div class="feature-cards">
+      <div class="feature-card glass-card">
+        <i class="fa-solid fa-film feature-icon"></i>
+        <h4 class="feature-title">Discover Movies</h4>
+        <p class="feature-desc">Explore trending blockbusters and hidden gems.</p>
+      </div>
+      <div class="feature-card glass-card">
+        <i class="fa-solid fa-wand-magic-sparkles feature-icon"></i>
+        <h4 class="feature-title">AI Recommendations</h4>
+        <p class="feature-desc">Smart suggestions powered by graph algorithms.</p>
+      </div>
+      <div class="feature-card glass-card">
+        <i class="fa-solid fa-user-astronaut feature-icon"></i>
+        <h4 class="feature-title">Explore Creators</h4>
+        <p class="feature-desc">Detailed actor & director filmographies.</p>
+      </div>
+      <div class="feature-card glass-card">
+        <i class="fa-solid fa-diagram-project feature-icon"></i>
+        <h4 class="feature-title">Knowledge Graph</h4>
+        <p class="feature-desc">Interactive 2D graph visualizations of movies.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right side with login form -->
+  <div class="login-right">
+    <div class="login-card glass-card">
+      <h3 class="card-title">Login to MovieVerse</h3>
+      <p class="card-subtitle">Enter your account details or use demo credentials</p>
+
+      <!-- Quick Demo Credentials Hint -->
+      <div class="alert alert-purple-subtle d-flex align-items-center py-2 px-3 mb-3 border border-purple-subtle rounded-3 text-light small">
+        <i class="fa-solid fa-key text-pink me-2 fs-5"></i>
+        <div>
+          <strong>Demo Login:</strong> Username: <code class="text-pink">demo</code> | Password: <code class="text-pink">password123</code>
+        </div>
+      </div>
+
+      <form id="loginForm" method="POST" action="{{ url_for('auth.login') }}">
+        <div class="form-group mb-3">
+          <label for="username" class="form-label"><i class="fa-solid fa-user me-2"></i>Username or Email</label>
+          <input type="text" class="form-control input-glass" id="username" name="username" placeholder="demo or demo@movieverse.com" required value="demo">
+        </div>
+        <div class="form-group mb-3">
+          <label for="password" class="form-label"><i class="fa-solid fa-lock me-2"></i>Password</label>
+          <div class="input-group">
+            <input type="password" class="form-control input-glass" id="password" name="password" placeholder="••••••••" required value="password123">
+            <button class="btn btn-outline-light toggle-password" type="button" id="togglePasswordBtn"><i class="fa-solid fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="remember" id="remember" name="remember" checked>
+            <label class="form-check-label text-secondary small" for="remember">Remember Me</label>
+          </div>
+          <a href="#" class="forgot-link small text-pink">Forgot Password?</a>
+        </div>
+        <button type="submit" class="btn btn-gradient w-100 py-2 fw-semibold" id="loginBtn">
+          <i class="fa-solid fa-right-to-bracket me-2"></i>Login
+        </button>
+      </form>
+
+      <div class="divider my-4"><span>OR LOGIN WITH</span></div>
+      <div class="social-login d-flex justify-content-between gap-2">
+        <a href="{{ url_for('auth.google_login') }}" class="btn btn-outline-glass w-100"><i class="fa-brands fa-google me-1"></i> Google</a>
+        <a href="{{ url_for('auth.github_login') }}" class="btn btn-outline-glass w-100"><i class="fa-brands fa-github me-1"></i> GitHub</a>
+        <a href="{{ url_for('auth.apple_login') }}" class="btn btn-outline-glass w-100"><i class="fa-brands fa-apple me-1"></i> Apple</a>
+      </div>
+      <p class="mt-4 text-center footer-text text-secondary small">Don't have an account? <a href="{{ url_for('auth.register') }}" class="text-pink fw-bold text-decoration-none">Create Account</a></p>
+    </div>
+    <footer class="login-footer mt-4 text-center">
+      <p class="text-secondary small mb-0">© 2026 MovieVerse. All rights reserved.</p>
+    </footer>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const loginForm = document.getElementById('loginForm');
+  const overlay = document.getElementById('loading-overlay');
+  const toggleBtn = document.getElementById('togglePasswordBtn');
+  const passwordInput = document.getElementById('password');
+
+  // Toggle password visibility
+  if (toggleBtn && passwordInput) {
+    toggleBtn.addEventListener('click', function() {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      this.querySelector('i').classList.toggle('fa-eye');
+      this.querySelector('i').classList.toggle('fa-eye-slash');
+    });
+  }
+
+  // Handle server-side trigger of loading screen
+  {% if show_loading %}
+    overlay.classList.add('active');
+    setTimeout(function() {
+      window.location.href = "{{ redirect_url if redirect_url else url_for('main.home') }}";
+    }, 1500);
+  {% endif %}
+
+  // Handle AJAX login submit for smooth loading transition
+  if (loginForm) {
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = passwordInput.value;
+      const remember = document.getElementById('remember').checked;
+
+      fetch("{{ url_for('auth.login') }}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest"
+        },
+        body: JSON.stringify({ username: username, password: password, remember: remember })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          overlay.classList.add('active');
+          setTimeout(function() {
+            window.location.href = data.redirect || "{{ url_for('main.home') }}";
+          }, 1500);
+        } else {
+          alert(data.message || "Invalid username or password.");
+        }
+      })
+      .catch(err => {
+        // Fallback to standard form submit if fetch fails
+        loginForm.submit();
+      });
+    });
+  }
+});
+</script>
+{% endblock %}

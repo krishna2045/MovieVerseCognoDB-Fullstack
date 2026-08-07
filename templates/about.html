@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}About MovieVerse - AI Cinema Discovery Platform{% endblock %}
+{% block content %}
+
+<!-- Hero Banner -->
+<div class="glass-card p-4 p-md-5 mb-5 position-relative overflow-hidden">
+  <div class="row align-items-center">
+    <div class="col-lg-7">
+      <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-purple-subtle text-purple border border-purple-subtle mb-3">
+        <i class="fa-solid fa-circle-info text-pink"></i>
+        <span class="small fw-semibold text-light">Next-Gen Cinema Intelligence</span>
+      </div>
+      <h1 class="display-4 fw-extrabold mb-3">About <span class="text-gradient">MovieVerse</span></h1>
+      <p class="lead text-secondary mb-4">
+        MovieVerse is an intelligent movie discovery platform powered by AI and Knowledge Graph technology. It bridges machine learning recommendation algorithms with CognoDB graph database relationships to deliver unprecedented movie insights.
+      </p>
+      <div class="d-flex flex-wrap gap-3">
+        <a href="{{ url_for('main.recommendations') }}" class="btn btn-gradient-highlight px-4"><i class="fa-solid fa-sparkles me-2"></i>Explore Recommendations</a>
+        <a href="{{ url_for('main.graph_view') }}" class="btn btn-outline-glass px-4"><i class="fa-solid fa-diagram-project me-2"></i>Explore Knowledge Graph</a>
+      </div>
+    </div>
+
+    <!-- Cinema Illustration Stage -->
+    <div class="col-lg-5 d-none d-lg-flex justify-content-center align-items-center position-relative">
+      <div class="hero-cinematic-stage text-center position-relative py-5 w-100">
+        <div class="purple-smoke-glow"></div>
+        <div class="blue-lighting-glow"></div>
+        <i class="fa-solid fa-film hero-icon-film text-purple" title="Film Reel"></i>
+        <i class="fa-solid fa-popcorn hero-icon-popcorn text-warning" title="Popcorn Bucket"></i>
+        <i class="fa-solid fa-clapperboard hero-icon-clapper text-pink" title="Movie Clapperboard"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Feature Cards Grid -->
+<h3 class="fw-bold text-light mb-4 text-center"><i class="fa-solid fa-layer-group text-pink me-2"></i> Core Platform Features</h3>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+  <div class="col">
+    <div class="glass-card p-4 h-100 text-center">
+      <div class="btn-icon-glass mx-auto mb-3 text-purple fs-4" style="width: 54px; height: 54px;"><i class="fa-solid fa-magnifying-glass"></i></div>
+      <h5 class="fw-bold text-light mb-2">Smart Search</h5>
+      <p class="text-secondary small mb-0">Fuzzy title matching and multi-attribute filters across titles, directors, actors, and genres.</p>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="glass-card p-4 h-100 text-center">
+      <div class="btn-icon-glass mx-auto mb-3 text-pink fs-4" style="width: 54px; height: 54px;"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+      <h5 class="fw-bold text-light mb-2">AI Recommendations</h5>
+      <p class="text-secondary small mb-0">Graph-based hybrid content similarity engine delivering personalized top matches tailored to your taste.</p>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="glass-card p-4 h-100 text-center">
+      <div class="btn-icon-glass mx-auto mb-3 text-blue fs-4" style="width: 54px; height: 54px;"><i class="fa-solid fa-diagram-project"></i></div>
+      <h5 class="fw-bold text-light mb-2">Knowledge Graph</h5>
+      <p class="text-secondary small mb-0">Interactive 2D graph visualizations powered by CognoDB to explore complex cinematic relationships.</p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

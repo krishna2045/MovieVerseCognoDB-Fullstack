@@ -1,0 +1,283 @@
+{% extends "base.html" %}
+{% block title %}MovieVerse - 4K UI/UX Case Study Presentation (Behance / Dribbble Showcase){% endblock %}
+
+{% block extra_head %}
+<style>
+  .showcase-canvas {
+    max-width: 100%;
+    background: #090B14;
+    border-radius: 24px;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 40px rgba(139, 92, 246, 0.2);
+    overflow: hidden;
+  }
+  .slide-btn.active {
+    background: linear-gradient(135deg, #8B5CF6, #3B82F6) !important;
+    color: #FFF !important;
+    border-color: transparent !important;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.5);
+  }
+  .screen-frame {
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    background: rgba(15, 19, 34, 0.95);
+    overflow: hidden;
+    transition: transform 0.4s ease;
+  }
+  .screen-frame:hover {
+    border-color: #8B5CF6;
+    transform: translateY(-4px);
+  }
+  .badge-4k {
+    background: linear-gradient(90deg, #EC4899, #8B5CF6);
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.35rem 0.8rem;
+    border-radius: 20px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Case Study Presentation Banner -->
+<div class="glass-card p-4 p-md-5 mb-5 text-center position-relative">
+  <div class="d-inline-flex align-items-center gap-2 mb-3">
+    <span class="badge-4k text-white"><i class="fa-solid fa-crown me-1"></i> Behance & Dribbble Showcase</span>
+    <span class="badge bg-dark border border-secondary text-light px-3 py-1 rounded-pill">Resolution: 3840 × 2160 (4K Ultra HD)</span>
+  </div>
+  <h1 class="display-3 fw-extrabold text-light mb-3">
+    MovieVerse <span class="text-gradient">UI/UX Case Study</span>
+  </h1>
+  <p class="lead text-secondary mx-auto mb-4" style="max-width: 800px;">
+    An award-winning, Apple-level UI presentation for an AI-powered cinematic discovery platform. Built with Dark Mode, Glassmorphism, 18px border-radius, and custom Neon accents.
+  </p>
+
+  <!-- Color Palette Chips -->
+  <div class="d-flex flex-wrap justify-content-center align-items-center gap-3 mb-4">
+    <span class="text-secondary small fw-semibold">Color Tokens:</span>
+    <span class="badge rounded-pill px-3 py-2 text-white border" style="background:#090B14; border-color:#333 !important;">#090B14 (Background)</span>
+    <span class="badge rounded-pill px-3 py-2 text-white" style="background:#8B5CF6;">#8B5CF6 (Purple Neon)</span>
+    <span class="badge rounded-pill px-3 py-2 text-white" style="background:#3B82F6;">#3B82F6 (Blue Glow)</span>
+    <span class="badge rounded-pill px-3 py-2 text-white" style="background:#EC4899;">#EC4899 (Pink Accent)</span>
+  </div>
+
+  <!-- Interactive Slide Switcher Navigation -->
+  <div class="d-flex flex-wrap justify-content-center gap-2" id="slide-nav">
+    <button class="btn btn-outline-glass slide-btn active" onclick="switchSlide(1)"><i class="fa-solid fa-right-to-bracket me-1"></i> Screen 1: Login</button>
+    <button class="btn btn-outline-glass slide-btn" onclick="switchSlide(2)"><i class="fa-solid fa-house me-1"></i> Screen 2: Home</button>
+    <button class="btn btn-outline-glass slide-btn" onclick="switchSlide(3)"><i class="fa-solid fa-magnifying-glass me-1"></i> Screen 3: Search</button>
+    <button class="btn btn-outline-glass slide-btn" onclick="switchSlide(4)"><i class="fa-solid fa-wand-magic-sparkles me-1"></i> Screen 4: Recommendations</button>
+    <button class="btn btn-outline-glass slide-btn" onclick="switchSlide(5)"><i class="fa-solid fa-diagram-project me-1"></i> Screen 5: Graph</button>
+    <button class="btn btn-outline-glass slide-btn" onclick="switchSlide(6)"><i class="fa-solid fa-circle-info me-1"></i> Screen 6: About</button>
+  </div>
+</div>
+
+<!-- 4K Showcase Main Canvas Container -->
+<div class="showcase-canvas p-4 p-md-5 mb-5">
+
+  <!-- SLIDE 1: SCREEN 1 LOGIN PAGE -->
+  <div class="slide-content" id="slide-1">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <span class="text-pink fw-bold text-uppercase small">Screen 01 / 06</span>
+        <h2 class="fw-extrabold text-light mb-0">Login & Authentication Flow</h2>
+      </div>
+      <a href="{{ url_for('auth.login') }}" target="_blank" class="btn btn-outline-pink btn-sm"><i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Open Live Screen 1</a>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <div class="screen-frame p-4 h-100">
+          <h5 class="fw-bold text-gradient mb-3">Left Panel Specification</h5>
+          <ul class="text-secondary small lh-lg">
+            <li><strong class="text-light">Brand Logo:</strong> Pink "Movie" + Blue Gradient "Verse"</li>
+            <li><strong class="text-light">Heading & Tagline:</strong> "Welcome Back" with cinematic subtitle</li>
+            <li><strong class="text-light">Floating Illustrations:</strong> Film Reel, Popcorn Bucket, Clapperboard, Cinema Tickets with glowing purple smoke</li>
+            <li><strong class="text-light">Glass Cards:</strong> 4 Feature Cards (Discover Movies, Personalized Recommendations, Explore Actors, Knowledge Graph)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="screen-frame p-4 h-100">
+          <h5 class="fw-bold text-gradient mb-3">Right Panel & OAuth Flow</h5>
+          <ul class="text-secondary small lh-lg">
+            <li><strong class="text-light">Login Card:</strong> Glassmorphism 28px radius, purple neon border, soft blur</li>
+            <li><strong class="text-light">Input Controls:</strong> Email (Envelope icon), Password (Lock & Eye toggle), Remember Me & Forgot Password</li>
+            <li><strong class="text-light">Action Button:</strong> Gradient Purple → Blue with soft glow shadow</li>
+            <li><strong class="text-light">Social Login:</strong> Official Google, GitHub, and Apple OAuth buttons</li>
+            <li><strong class="text-light">Flow Transition:</strong> Animated arrow indicating login success → redirect to Dashboard</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: SCREEN 2 HOME PAGE -->
+  <div class="slide-content d-none" id="slide-2">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <span class="text-pink fw-bold text-uppercase small">Screen 02 / 06</span>
+        <h2 class="fw-extrabold text-light mb-0">After Login / Main Dashboard</h2>
+      </div>
+      <a href="{{ url_for('main.home') }}" target="_blank" class="btn btn-outline-pink btn-sm"><i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Open Live Screen 2</a>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <div class="screen-frame p-4 h-100">
+          <h5 class="fw-bold text-gradient mb-3">Hero Section & Genre Filters</h5>
+          <p class="text-secondary small">Cinematic banner featuring AI discovery headline, search input, and instant category filters for Marvel, DC, Sci-Fi, Action, and Adventure.</p>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="screen-frame p-4 h-100">
+          <h5 class="fw-bold text-gradient mb-3">Popular Movies Grid</h5>
+          <p class="text-secondary small">Responsive 6-column glass-card grid displaying high-res posters, IMDb rating badges, genres, hover zoom effects, Watch Now buttons, and Favorite hearts.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: SCREEN 3 SEARCH PAGE -->
+  <div class="slide-content d-none" id="slide-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <span class="text-pink fw-bold text-uppercase small">Screen 03 / 06</span>
+        <h2 class="fw-extrabold text-light mb-0">Search & Multi-Attribute Filtering</h2>
+      </div>
+      <a href="{{ url_for('main.search') }}" target="_blank" class="btn btn-outline-pink btn-sm"><i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Open Live Screen 3</a>
+    </div>
+
+    <div class="screen-frame p-4">
+      <h5 class="fw-bold text-gradient mb-3">Multi-Filter Control Panel</h5>
+      <p class="text-secondary small mb-3">Instant filter bar supporting Type, Genre, Actor, Director, Min IMDb Rating, and Sort By controls. Detailed result rows display posters, directors, cast lists, runtime, and Watch Trailer buttons.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: SCREEN 4 RECOMMENDATIONS PAGE -->
+  <div class="slide-content d-none" id="slide-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <span class="text-pink fw-bold text-uppercase small">Screen 04 / 06</span>
+        <h2 class="fw-extrabold text-light mb-0">AI-Powered Recommendations Engine</h2>
+      </div>
+      <a href="{{ url_for('main.recommendations') }}" target="_blank" class="btn btn-outline-pink btn-sm"><i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Open Live Screen 4</a>
+    </div>
+
+    <div class="screen-frame p-4">
+      <h5 class="fw-bold text-gradient mb-3">Graph Neural Network Match Cards</h5>
+      <p class="text-secondary small mb-3">Recommendation cards displaying AI confidence match badges (98% Match, 96% Match), IMDb badges, genres, Watch Now actions, and More Recommendations triggers.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: SCREEN 5 GRAPH PAGE -->
+  <div class="slide-content d-none" id="slide-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <span class="text-pink fw-bold text-uppercase small">Screen 05 / 06</span>
+        <h2 class="fw-extrabold text-light mb-0">Interactive Movie Knowledge Graph</h2>
+      </div>
+      <a href="{{ url_for('main.graph_view') }}" target="_blank" class="btn btn-outline-pink btn-sm"><i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Open Live Screen 5</a>
+    </div>
+
+    <div class="screen-frame p-4">
+      <h5 class="fw-bold text-gradient mb-3">Vis.js Neo4j Graph Visualizer</h5>
+      <p class="text-secondary small mb-3">Centered on <em>Inception</em>, displaying network connections to Christopher Nolan (Director), Leonardo DiCaprio, Joseph Gordon-Levitt, Elliot Page (Actors), Hans Zimmer (Composer), Sci-Fi, and Thriller (Genres). Equipped with Zoom In/Out, Reset, Fullscreen, and interactive color legend.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: SCREEN 6 ABOUT PAGE -->
+  <div class="slide-content d-none" id="slide-6">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <span class="text-pink fw-bold text-uppercase small">Screen 06 / 06</span>
+        <h2 class="fw-extrabold text-light mb-0">Platform Specs & Architecture</h2>
+      </div>
+      <a href="{{ url_for('main.about') }}" target="_blank" class="btn btn-outline-pink btn-sm"><i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Open Live Screen 6</a>
+    </div>
+
+    <div class="screen-frame p-4">
+      <h5 class="fw-bold text-gradient mb-3">6 Core Feature Cards & Tech Stack</h5>
+      <p class="text-secondary small mb-3">Showcasing Smart Search, AI Recommendations, Knowledge Graph, Trending Movies, Popular Actors, and Movie Analytics alongside platform overview and footer links.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Overview Grid of All 6 Live Screens -->
+<h3 class="fw-bold text-light mb-4 text-center"><i class="fa-solid fa-grip text-pink me-2"></i> All 6 Screens Overview</h3>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+  <div class="col">
+    <div class="glass-card p-3 h-100">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <strong class="text-light">01. Login Page</strong>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-pink btn-sm py-0 px-2 fs-7">View</a>
+      </div>
+      <p class="text-secondary small mb-0">Split panel glassmorphism design with floating cinema items & OAuth buttons.</p>
+    </div>
+  </div>
+  <div class="col">
+    <div class="glass-card p-3 h-100">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <strong class="text-light">02. Home Page</strong>
+        <a href="{{ url_for('main.home') }}" class="btn btn-outline-pink btn-sm py-0 px-2 fs-7">View</a>
+      </div>
+      <p class="text-secondary small mb-0">Dashboard hero search bar, genre pills, and popular movie cards grid.</p>
+    </div>
+  </div>
+  <div class="col">
+    <div class="glass-card p-3 h-100">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <strong class="text-light">03. Search Page</strong>
+        <a href="{{ url_for('main.search') }}" class="btn btn-outline-pink btn-sm py-0 px-2 fs-7">View</a>
+      </div>
+      <p class="text-secondary small mb-0">Multi-attribute filter bar & detailed search result cards.</p>
+    </div>
+  </div>
+  <div class="col">
+    <div class="glass-card p-3 h-100">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <strong class="text-light">04. Recommendations Page</strong>
+        <a href="{{ url_for('main.recommendations') }}" class="btn btn-outline-pink btn-sm py-0 px-2 fs-7">View</a>
+      </div>
+      <p class="text-secondary small mb-0">AI match confidence score badges & personalized recommendation cards.</p>
+    </div>
+  </div>
+  <div class="col">
+    <div class="glass-card p-3 h-100">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <strong class="text-light">05. Knowledge Graph Page</strong>
+        <a href="{{ url_for('main.graph_view') }}" class="btn btn-outline-pink btn-sm py-0 px-2 fs-7">View</a>
+      </div>
+      <p class="text-secondary small mb-0">Vis.js node network visualization centered on Inception with full controls.</p>
+    </div>
+  </div>
+  <div class="col">
+    <div class="glass-card p-3 h-100">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <strong class="text-light">06. About Page</strong>
+        <a href="{{ url_for('main.about') }}" class="btn btn-outline-pink btn-sm py-0 px-2 fs-7">View</a>
+      </div>
+      <p class="text-secondary small mb-0">6 feature glass cards, technology stack overview, and platform footer.</p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function switchSlide(index) {
+  // Hide all slides
+  document.querySelectorAll('.slide-content').forEach(el => el.classList.add('d-none'));
+  // Deactivate all buttons
+  document.querySelectorAll('.slide-btn').forEach(btn => btn.classList.remove('active'));
+
+  // Show selected slide & activate button
+  document.getElementById('slide-' + index).classList.remove('d-none');
+  document.querySelectorAll('.slide-btn')[index - 1].classList.add('active');
+}
+</script>
+{% endblock %}

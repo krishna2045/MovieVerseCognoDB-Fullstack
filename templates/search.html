@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block title %}Search & Discovery - MovieVerse{% endblock %}
+{% block content %}
+
+<!-- Header & Search Bar -->
+<div class="glass-card p-4 mb-4">
+  <form method="GET" action="{{ url_for('main.search') }}">
+    <div class="row g-3 align-items-center">
+      <div class="col-lg-8">
+        <label for="search-input" class="form-label text-light fw-semibold"><i class="fa-solid fa-magnifying-glass text-pink me-2"></i>Search Movies, Actors & Directors</label>
+        <div class="input-group input-group-lg">
+          <input type="search" id="search-input" class="form-control bg-dark text-light border-secondary" name="movie" value="{{ query if query else '' }}" placeholder="Search by movie title, actor, or director..." required />
+          <button type="submit" class="btn btn-gradient-highlight px-4"><i class="fa-solid fa-magnifying-glass me-2"></i>Search</button>
+        </div>
+      </div>
+      <div class="col-lg-4 text-lg-end mt-4">
+        <button type="button" class="btn btn-outline-glass px-3 me-2" data-bs-toggle="collapse" data-bs-target="#advanced-filters">
+          <i class="fa-solid fa-sliders me-2"></i>Filters
+        </button>
+        <button type="submit" class="btn btn-outline-pink px-3">Apply Filters</button>
+      </div>
+    </div>
+
+    <!-- Advanced Filter Bar -->
+    <div class="collapse show mt-4 pt-3 border-top border-secondary border-opacity-25" id="advanced-filters">
+      <div class="row g-3">
+        <div class="col-md-2 col-6">
+          <label class="form-label text-secondary small mb-1"><i class="fa-solid fa-film me-1 text-purple"></i>Type</label>
+          <select class="form-select bg-dark text-light border-secondary form-select-sm">
+            <option selected>Movie</option>
+            <option>TV Series</option>
+            <option>Documentary</option>
+          </select>
+        </div>
+        <div class="col-md-2 col-6">
+          <label class="form-label text-secondary small mb-1"><i class="fa-solid fa-masks-theater me-1 text-pink"></i>Genre</label>
+          <select class="form-select bg-dark text-light border-secondary form-select-sm">
+            <option selected>All Genres</option>
+            <option>Sci-Fi</option>
+            <option>Action</option>
+            <option>Drama</option>
+            <option>Thriller</option>
+          </select>
+        </div>
+        <div class="col-md-2 col-6">
+          <label class="form-label text-secondary small mb-1"><i class="fa-solid fa-user-astronaut me-1 text-blue"></i>Actor</label>
+          <input type="text" class="form-control bg-dark text-light border-secondary form-control-sm" placeholder="e.g. Yash, RDJ" />
+        </div>
+        <div class="col-md-2 col-6">
+          <label class="form-label text-secondary small mb-1"><i class="fa-solid fa-video me-1 text-warning"></i>Director</label>
+          <input type="text" class="form-control bg-dark text-light border-secondary form-control-sm" placeholder="e.g. Nolan, Sukumar" />
+        </div>
+        <div class="col-md-2 col-6">
+          <label class="form-label text-secondary small mb-1"><i class="fa-solid fa-star me-1 text-warning"></i>Min IMDb</label>
+          <select class="form-select bg-dark text-light border-secondary form-select-sm">
+            <option selected>All Ratings</option>
+            <option>8.0+</option>
+            <option>7.0+</option>
+          </select>
+        </div>
+        <div class="col-md-2 col-6">
+          <label class="form-label text-secondary small mb-1"><i class="fa-solid fa-arrow-down-wide-short me-1 text-pink"></i>Sort By</label>
+          <select class="form-select bg-dark text-light border-secondary form-select-sm">
+            <option selected>Relevance</option>
+            <option>Rating (High to Low)</option>
+            <option>Release Year</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Search Results Heading -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h4 class="text-light fw-bold mb-0">
+    <i class="fa-solid fa-list-check text-pink me-2"></i>Search Results
+    {% if query %}<span class="badge bg-purple-subtle text-purple border border-purple-subtle fs-6 ms-2">For "{{ query }}"</span>{% endif %}
+  </h4>
+  <span class="text-secondary small">Found {{ movies|length }} films</span>
+</div>
+
+<!-- Search Results Grid -->
+<div class="row g-4 mb-5">
+  {% for movie in movies %}
+  <div class="col-12">
+    <div class="glass-card p-3 p-md-4">
+      <div class="row g-4 align-items-center">
+        <div class="col-md-3 col-lg-2 text-center">
+          <div class="movie-card-poster-wrapper rounded-3" style="aspect-ratio: 2/3;">
+            <img src="{{ movie.poster_url if movie.poster_url else 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&q=80' }}" alt="{{ movie.title }} Poster" />
+          </div>
+        </div>
+        <div class="col-md-9 col-lg-10">
+          <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-2">
+            <div>
+              <h3 class="fw-bold text-light mb-1">{{ movie.title }} <span class="text-secondary fs-5">({{ movie.year if movie.year else 2024 }})</span></h3>
+              <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                <span class="imdb-badge"><i class="fa-solid fa-star me-1"></i>{{ movie.rating if movie.rating else '8.5' }} IMDb</span>
+                <span class="text-secondary small"><i class="fa-regular fa-clock me-1"></i>{{ movie.runtime if movie.runtime else '150 min' }}</span>
+                {% if movie.genres %}
+                  {% for g in movie.genres %}
+                  <span class="genre-pill">{{ g }}</span>
+                  {% endfor %}
+                {% else %}
+                  <span class="genre-pill">Action</span>
+                {% endif %}
+              </div>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-outline-glass btn-sm"><i class="fa-regular fa-bookmark me-1"></i> Watchlist</button>
+              <a href="{{ url_for('main.movie_details', title=movie.title) }}" class="btn btn-gradient-highlight btn-sm px-3"><i class="fa-solid fa-circle-info me-1"></i> View Details</a>
+            </div>
+          </div>
+
+          <p class="text-secondary small mb-3">{{ movie.overview if movie.overview else (movie.summary if movie.summary else 'Cinematic masterpiece powered by CognoDB Knowledge Graph.') }}</p>
+
+          <div class="row g-2 pt-2 border-top border-secondary border-opacity-10 text-light small">
+            <div class="col-md-4">
+              <span class="text-secondary">Director:</span> <strong class="text-light">{{ movie.director|join(', ') if movie.director else (movie.directors|join(', ') if movie.directors else 'MovieVerse AI') }}</strong>
+            </div>
+            <div class="col-md-8">
+              <span class="text-secondary">Cast:</span> <span class="text-light">{{ movie.cast|join(', ') if movie.cast else (movie.actors|join(', ') if movie.actors else 'Starring top performers') }}</span>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <a href="https://www.youtube.com/results?search_query={{ movie.title }}+trailer" target="_blank" class="btn btn-outline-pink btn-sm"><i class="fa-solid fa-play me-1"></i> Watch Trailer</a>
+            <a href="{{ url_for('main.graph_view', title=movie.title) }}" class="btn btn-outline-glass btn-sm ms-2"><i class="fa-solid fa-diagram-project me-1 text-purple"></i> Explore in Graph</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}{{ details.title if details and details.title else (details.movie if details and details.movie else 'Movie Details') }} – MovieVerse{% endblock %}
+{% block content %}
+
+{% if details %}
+<div class="glass-card p-4 p-md-5 mb-5">
+  <div class="row g-4 align-items-center">
+    <div class="col-md-4 col-lg-3 text-center">
+      <div class="movie-card-poster-wrapper rounded-3 shadow-lg" style="aspect-ratio: 2/3;">
+        <img src="{{ details.poster_url if details.poster_url else 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600&q=80' }}" class="img-fluid" alt="{{ details.title if details.title else details.movie }} poster" />
+      </div>
+    </div>
+    <div class="col-md-8 col-lg-9 text-light">
+      <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+        <span class="imdb-badge"><i class="fa-solid fa-star me-1"></i>{{ details.rating if details.rating else '8.8' }} IMDb</span>
+        <span class="text-secondary small"><i class="fa-regular fa-clock me-1"></i>{{ details.runtime if details.runtime else '148 min' }}</span>
+        {% if details.genres %}
+          {% for g in details.genres %}
+          <span class="genre-pill">{{ g }}</span>
+          {% endfor %}
+        {% endif %}
+      </div>
+
+      <h1 class="fw-extrabold text-light display-5 mb-2">{{ details.title if details.title else details.movie }} <span class="text-secondary fs-4">({{ details.year if details.year else 2024 }})</span></h1>
+      <p class="lead text-secondary mb-4">{{ details.summary if details.summary else 'An extraordinary cinematic masterpiece linked through CognoDB Knowledge Graph relationships.' }}</p>
+
+      <div class="row g-3 pt-3 border-top border-secondary border-opacity-25 mb-4">
+        <div class="col-md-6">
+          <span class="text-secondary d-block small">Starring Actors</span>
+          <strong class="text-light">{{ details.actors|join(', ') if details.actors else 'Featured Ensemble' }}</strong>
+        </div>
+        <div class="col-md-6">
+          <span class="text-secondary d-block small">Directors</span>
+          <strong class="text-light">{{ details.directors|join(', ') if details.directors else 'Master Directors' }}</strong>
+        </div>
+      </div>
+
+      <div class="d-flex flex-wrap gap-3">
+        <a href="https://www.youtube.com/results?search_query={{ details.title if details.title else details.movie }}+trailer" target="_blank" class="btn btn-gradient-highlight px-4"><i class="fa-solid fa-play me-2"></i>Watch Trailer</a>
+        <a href="{{ url_for('main.graph_view', title=details.title if details.title else details.movie) }}" class="btn btn-outline-glass px-4"><i class="fa-solid fa-diagram-project me-2 text-purple"></i>View in Knowledge Graph</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<!-- Recommended for You Grid -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="text-light fw-bold mb-0"><i class="fa-solid fa-sparkles text-pink me-2"></i>Recommended for You</h3>
+  <span class="text-secondary small">CognoDB Graph Neural Engine</span>
+</div>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
+  {% for rec in recommendations %}
+  <div class="col">
+    <div class="glass-card h-100 d-flex flex-column movie-card">
+      <div class="movie-card-poster-wrapper">
+        <img src="{{ rec.poster_url if rec.poster_url else 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&q=80' }}" class="card-img-top" alt="{{ rec.title }} poster" loading="lazy" />
+        <span class="position-absolute top-0 start-0 m-2 badge bg-pink"><i class="fa-solid fa-sparkles me-1"></i>Rec</span>
+        <span class="position-absolute top-0 end-0 m-2 imdb-badge"><i class="fa-solid fa-star me-1"></i>{{ rec.rating if rec.rating else '8.5' }}</span>
+      </div>
+      <div class="p-3 d-flex flex-column justify-content-between flex-grow-1">
+        <h6 class="fw-bold text-light mb-1 text-truncate">{{ rec.title }}</h6>
+        <span class="text-secondary small mb-3">{{ rec.year if rec.year else 2024 }}</span>
+        <a href="{{ url_for('main.movie_details', title=rec.title) }}" class="btn btn-outline-glass btn-sm w-100">Details</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

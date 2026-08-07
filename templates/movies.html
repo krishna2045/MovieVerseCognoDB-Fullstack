@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Search Results – MovieVerse{% endblock %}
+{% block content %}
+<h3 class="text-light mb-4">Search Results</h3>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="search-grid">
+  {% for movie in movies %}
+  <div class="col">
+    <div class="card movie-card h-100">
+      <img src="{{ movie.poster_url or url_for('static', filename='img/placeholder.png') }}" class="card-img-top" alt="{{ movie.title }} poster" loading="lazy" />
+      <div class="card-body">
+        <h5 class="card-title text-truncate">{{ movie.title }}</h5>
+        <p class="card-text text-muted small">{{ movie.year }}</p>
+        <a href="{{ url_for('main.movie_details', title=movie.title) }}" class="stretched-link"></a>
+      </div>
+    </div>
+  </div>
+  {% else %}
+    <script>showEmptyState('#search-grid', 'No movies match your query.');</script>
+  {% endfor %}
+</div>
+{% endblock %}

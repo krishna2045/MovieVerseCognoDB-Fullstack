@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}AI Recommendations - MovieVerse{% endblock %}
+{% block content %}
+
+<!-- Heading & AI Header -->
+<div class="glass-card p-4 mb-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+    <div>
+      <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-pink-subtle text-pink border border-pink-subtle mb-2">
+        <i class="fa-solid fa-brain text-pink"></i>
+        <span class="small fw-semibold text-light">Graph Neural Recommendation Engine</span>
+      </div>
+      <h2 class="fw-bold text-light mb-1">Recommended For You</h2>
+      <p class="text-secondary small mb-0">Movies recommended using CognoDB Knowledge Graph.</p>
+    </div>
+    <div class="d-flex gap-2">
+      <a href="{{ url_for('main.recommendations') }}" class="btn btn-outline-glass btn-sm" id="btnGetMoreRecs"><i class="fa-solid fa-rotate me-1"></i> Get More Recommendations</a>
+      <a href="{{ url_for('main.graph_view') }}" class="btn btn-gradient-highlight btn-sm"><i class="fa-solid fa-diagram-project me-1"></i> View Knowledge Graph</a>
+    </div>
+  </div>
+</div>
+
+<!-- Recommendation Cards Grid -->
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
+  {% for rec in recommendations %}
+  <div class="col">
+    <div class="glass-card h-100 d-flex flex-column movie-card">
+      <div class="movie-card-poster-wrapper">
+        <img src="{{ rec.poster_url if rec.poster_url else 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&q=80' }}" alt="{{ rec.title }} Poster" loading="lazy" />
+        <span class="position-absolute top-0 start-0 m-2 badge bg-pink shadow"><i class="fa-solid fa-sparkles me-1"></i>98% Match</span>
+        <span class="position-absolute top-0 end-0 m-2 imdb-badge"><i class="fa-solid fa-star me-1"></i>{{ rec.rating if rec.rating else '8.7' }}</span>
+      </div>
+      <div class="p-3 d-flex flex-column justify-content-between flex-grow-1">
+        <div>
+          <h5 class="fw-bold text-light mb-1 text-truncate" title="{{ rec.title }}">{{ rec.title }}</h5>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="text-secondary small">{{ rec.year if rec.year else 2024 }}</span>
+            <div class="d-flex gap-1">
+              {% if rec.genres %}
+                {% for g in rec.genres[:2] %}
+                <span class="genre-pill">{{ g }}</span>
+                {% endfor %}
+              {% else %}
+                <span class="genre-pill">Sci-Fi</span>
+              {% endif %}
+            </div>
+          </div>
+          <p class="text-secondary small line-clamp-2 mb-2">{{ rec.summary if rec.summary else 'Recommended based on director and genre similarity graph.' }}</p>
+        </div>
+        <div class="d-grid gap-2 mt-3">
+          <a href="{{ url_for('main.movie_details', title=rec.title) }}" class="btn btn-gradient-highlight btn-sm"><i class="fa-solid fa-play me-1"></i> Details</a>
+          <a href="{{ url_for('main.graph_view', title=rec.title) }}" class="btn btn-outline-glass btn-sm"><i class="fa-solid fa-diagram-project me-1 text-purple"></i> Explore in Graph</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

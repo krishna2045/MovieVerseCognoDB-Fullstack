@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block title %}Register - MovieVerse Cinema Platform{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="login-page">
+  <!-- Left side with branding and features -->
+  <div class="login-left">
+    <div class="logo mb-2">
+      <h1 class="logo-movie"><span class="text-pink">Movie</span><span class="text-gradient">Verse</span></h1>
+    </div>
+    <h2 class="welcome-title">Create Account</h2>
+    <p class="welcome-subtitle">Join thousands of cinephiles and discover AI-powered personalized movie recommendations today.</p>
+
+    <!-- Floating cinema icons -->
+    <div class="illustration">
+      <i class="fa-solid fa-film illustration-item reel"></i>
+      <i class="fa-solid fa-popcorn illustration-item popcorn"></i>
+      <i class="fa-solid fa-clapperboard illustration-item clapper"></i>
+      <i class="fa-solid fa-ticket-simple illustration-item tickets"></i>
+    </div>
+
+    <!-- Feature Cards -->
+    <div class="feature-cards">
+      <div class="feature-card glass-card">
+        <i class="fa-solid fa-film feature-icon"></i>
+        <h4 class="feature-title">Discover Movies</h4>
+        <p class="feature-desc">Explore trending blockbusters and hidden gems.</p>
+      </div>
+      <div class="feature-card glass-card">
+        <i class="fa-solid fa-star feature-icon"></i>
+        <h4 class="feature-title">AI Recommendations</h4>
+        <p class="feature-desc">Get smart suggestions tailored to your taste.</p>
+      </div>
+      <div class="feature-card glass-card">
+        <i class="fa-solid fa-mask feature-icon"></i>
+        <h4 class="feature-title">Explore Creators</h4>
+        <p class="feature-desc">Find detailed info on directors & actors.</p>
+      </div>
+      <div class="feature-card glass-card">
+        <i class="fa-solid fa-sitemap feature-icon"></i>
+        <h4 class="feature-title">Knowledge Graph</h4>
+        <p class="feature-desc">Visualize connections in interactive 2D graphs.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right side with registration form -->
+  <div class="login-right">
+    <div class="login-card glass-card">
+      <h3 class="card-title">Join MovieVerse</h3>
+      <p class="card-subtitle">Create your free account</p>
+      <form method="POST" action="{{ url_for('auth.register') }}">
+        <div class="form-group mb-3">
+          <label for="username" class="form-label"><i class="fa-solid fa-user me-2"></i>Username</label>
+          <input type="text" class="form-control input-glass" id="username" name="username" placeholder="Choose a username" required>
+        </div>
+        <div class="form-group mb-3">
+          <label for="email" class="form-label"><i class="fa-solid fa-envelope me-2"></i>Email Address</label>
+          <input type="email" class="form-control input-glass" id="email" name="email" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group mb-3">
+          <label for="password" class="form-label"><i class="fa-solid fa-lock me-2"></i>Password</label>
+          <input type="password" class="form-control input-glass" id="password" name="password" placeholder="••••••••" required>
+        </div>
+        <div class="form-group mb-3">
+          <label for="confirm_password" class="form-label"><i class="fa-solid fa-shield-halved me-2"></i>Confirm Password</label>
+          <input type="password" class="form-control input-glass" id="confirm_password" name="confirm_password" placeholder="••••••••" required>
+        </div>
+        <div class="form-check mb-4">
+          <input class="form-check-input" type="checkbox" id="terms" required checked>
+          <label class="form-check-label text-secondary small" for="terms">
+            I agree to the <a href="#" class="text-pink">Terms of Service</a> and <a href="#" class="text-pink">Privacy Policy</a>
+          </label>
+        </div>
+        <button type="submit" class="btn btn-gradient w-100 py-2 fw-semibold"><i class="fa-solid fa-user-plus me-2"></i>Create Account</button>
+      </form>
+      <div class="divider my-4"><span>OR SIGN UP WITH</span></div>
+      <div class="social-login d-flex justify-content-between gap-2">
+        <a href="{{ url_for('auth.google_login') }}" class="btn btn-outline-glass w-100"><i class="fa-brands fa-google me-1"></i> Google</a>
+        <a href="{{ url_for('auth.github_login') }}" class="btn btn-outline-glass w-100"><i class="fa-brands fa-github me-1"></i> GitHub</a>
+        <a href="{{ url_for('auth.apple_login') }}" class="btn btn-outline-glass w-100"><i class="fa-brands fa-apple me-1"></i> Apple</a>
+      </div>
+      <p class="mt-4 text-center footer-text text-secondary small">Already have an account? <a href="{{ url_for('auth.login') }}" class="text-pink fw-bold text-decoration-none">Login</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

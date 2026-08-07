@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Interactive Knowledge Graph - MovieVerse{% endblock %}
+{% block extra_head %}
+<link href="https://unpkg.com/vis-network@9.1.2/dist/vis-network.min.css" rel="stylesheet" />
+{% endblock %}
+{% block content %}
+
+<!-- Graph Control Header -->
+<div class="glass-card p-4 mb-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+    <div>
+      <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-purple-subtle text-purple border border-purple-subtle mb-2">
+        <i class="fa-solid fa-diagram-project text-purple"></i>
+        <span class="small fw-semibold text-light">CognoDB Knowledge Graph Engine</span>
+      </div>
+      <h2 class="fw-bold text-light mb-1">Movie Knowledge Graph</h2>
+      <p class="text-secondary small mb-0">Visualize rich interactive connections between movies, actors, directors, and genres.</p>
+    </div>
+
+    <!-- Action Toolbar -->
+    <div class="d-flex align-items-center gap-2">
+      <button class="btn btn-outline-glass btn-sm" id="btn-zoom-in" title="Zoom In"><i class="fa-solid fa-magnifying-glass-plus me-1"></i> Zoom In</button>
+      <button class="btn btn-outline-glass btn-sm" id="btn-zoom-out" title="Zoom Out"><i class="fa-solid fa-magnifying-glass-minus me-1"></i> Zoom Out</button>
+      <button class="btn btn-outline-glass btn-sm" id="btn-reset" title="Reset Camera"><i class="fa-solid fa-rotate-left me-1"></i> Reset</button>
+      <button class="btn btn-gradient-highlight btn-sm" id="btn-fullscreen" title="Fullscreen"><i class="fa-solid fa-expand me-1"></i> Fullscreen</button>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="d-flex flex-wrap align-items-center gap-3 mt-3 pt-3 border-top border-secondary border-opacity-10 text-light small">
+    <span class="text-secondary fw-semibold">Legend:</span>
+    <span class="badge rounded-pill px-3" style="background: rgba(139, 92, 246, 0.2); color: #A78BFA; border: 1px solid #8B5CF6;"><i class="fa-solid fa-film me-1"></i> Movies</span>
+    <span class="badge rounded-pill px-3" style="background: rgba(59, 130, 246, 0.2); color: #60A5FA; border: 1px solid #3B82F6;"><i class="fa-solid fa-user me-1"></i> Actors</span>
+    <span class="badge rounded-pill px-3" style="background: rgba(236, 72, 153, 0.2); color: #F472B6; border: 1px solid #EC4899;"><i class="fa-solid fa-video me-1"></i> Directors</span>
+    <span class="badge rounded-pill px-3" style="background: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid #10B981;"><i class="fa-solid fa-masks-theater me-1"></i> Genres</span>
+    <span class="badge rounded-pill px-3" style="background: rgba(245, 158, 11, 0.2); color: #FBBF24; border: 1px solid #F59E0B;"><i class="fa-solid fa-link me-1"></i> Relationships</span>
+  </div>
+</div>
+
+<!-- Main Canvas Card -->
+<div class="glass-card p-3 mb-5 position-relative" id="graph-wrapper">
+  <div id="graph-container" style="height: 650px; background: rgba(9, 11, 20, 0.95); border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.08);"></div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/vis-network@9.1.2/dist/vis-network.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const nodes = new vis.DataSet([
+    // Movies
+    { id: 1, label: "Inception\n(Movie)", color: { background: "#8B5CF6", border: "#A78BFA" }, font: { color: "#FFF", size: 16, bold: true }, shape: "ellipse", size: 32 },
+    { id: 2, label: "Interstellar\n(Movie)", color: { background: "#8B5CF6", border: "#A78BFA" }, font: { color: "#FFF", size: 16, bold: true }, shape: "ellipse", size: 32 },
+    { id: 3, label: "The Dark Knight\n(Movie)", color: { background: "#8B5CF6", border: "#A78BFA" }, font: { color: "#FFF", size: 16, bold: true }, shape: "ellipse", size: 32 },
+    { id: 4, label: "KGF Chapter 2\n(Movie)", color: { background: "#8B5CF6", border: "#A78BFA" }, font: { color: "#FFF", size: 16, bold: true }, shape: "ellipse", size: 32 },
+    { id: 5, label: "RRR\n(Movie)", color: { background: "#8B5CF6", border: "#A78BFA" }, font: { color: "#FFF", size: 16, bold: true }, shape: "ellipse", size: 32 },
+
+    // Directors
+    { id: 10, label: "Christopher Nolan\n(Director)", color: { background: "#EC4899", border: "#F472B6" }, font: { color: "#FFF" }, shape: "box" },
+    { id: 11, label: "Prashanth Neel\n(Director)", color: { background: "#EC4899", border: "#F472B6" }, font: { color: "#FFF" }, shape: "box" },
+    { id: 12, label: "S.S. Rajamouli\n(Director)", color: { background: "#EC4899", border: "#F472B6" }, font: { color: "#FFF" }, shape: "box" },
+
+    // Actors
+    { id: 20, label: "Leonardo DiCaprio\n(Actor)", color: { background: "#3B82F6", border: "#60A5FA" }, font: { color: "#FFF" }, shape: "box" },
+    { id: 21, label: "Matthew McConaughey\n(Actor)", color: { background: "#3B82F6", border: "#60A5FA" }, font: { color: "#FFF" }, shape: "box" },
+    { id: 22, label: "Christian Bale\n(Actor)", color: { background: "#3B82F6", border: "#60A5FA" }, font: { color: "#FFF" }, shape: "box" },
+    { id: 23, label: "Yash\n(Actor)", color: { background: "#3B82F6", border: "#60A5FA" }, font: { color: "#FFF" }, shape: "box" },
+    { id: 24, label: "Ram Charan\n(Actor)", color: { background: "#3B82F6", border: "#60A5FA" }, font: { color: "#FFF" }, shape: "box" },
+
+    // Genres
+    { id: 30, label: "Sci-Fi\n(Genre)", color: { background: "#10B981", border: "#34D399" }, font: { color: "#FFF" }, shape: "database" },
+    { id: 31, label: "Action\n(Genre)", color: { background: "#10B981", border: "#34D399" }, font: { color: "#FFF" }, shape: "database" },
+    { id: 32, label: "Drama\n(Genre)", color: { background: "#10B981", border: "#34D399" }, font: { color: "#FFF" }, shape: "database" }
+  ]);
+
+  const edges = new vis.DataSet([
+    { from: 1, to: 10, label: "DIRECTED_BY", color: { color: "#EC4899" }, width: 3 },
+    { from: 2, to: 10, label: "DIRECTED_BY", color: { color: "#EC4899" }, width: 3 },
+    { from: 3, to: 10, label: "DIRECTED_BY", color: { color: "#EC4899" }, width: 3 },
+    { from: 4, to: 11, label: "DIRECTED_BY", color: { color: "#EC4899" }, width: 3 },
+    { from: 5, to: 12, label: "DIRECTED_BY", color: { color: "#EC4899" }, width: 3 },
+
+    { from: 1, to: 20, label: "STARRING", color: { color: "#3B82F6" }, width: 2 },
+    { from: 2, to: 21, label: "STARRING", color: { color: "#3B82F6" }, width: 2 },
+    { from: 3, to: 22, label: "STARRING", color: { color: "#3B82F6" }, width: 2 },
+    { from: 4, to: 23, label: "STARRING", color: { color: "#3B82F6" }, width: 2 },
+    { from: 5, to: 24, label: "STARRING", color: { color: "#3B82F6" }, width: 2 },
+
+    { from: 1, to: 30, label: "BELONGS_TO", color: { color: "#10B981" }, width: 2 },
+    { from: 2, to: 30, label: "BELONGS_TO", color: { color: "#10B981" }, width: 2 },
+    { from: 3, to: 31, label: "BELONGS_TO", color: { color: "#10B981" }, width: 2 },
+    { from: 4, to: 31, label: "BELONGS_TO", color: { color: "#10B981" }, width: 2 },
+    { from: 5, to: 32, label: "BELONGS_TO", color: { color: "#10B981" }, width: 2 }
+  ]);
+
+  const container = document.getElementById("graph-container");
+  const options = {
+    nodes: { shadow: true },
+    edges: { smooth: { type: "continuous" }, font: { color: "#9CA3AF", size: 11 } },
+    physics: { barnesHut: { gravitationalConstant: -7000, centralGravity: 0.3, springLength: 130 } }
+  };
+
+  const network = new vis.Network(container, { nodes, edges }, options);
+
+  // Control button listeners
+  document.getElementById("btn-zoom-in").addEventListener("click", () => {
+    const scale = network.getScale();
+    network.moveTo({ scale: scale * 1.35 });
+  });
+
+  document.getElementById("btn-zoom-out").addEventListener("click", () => {
+    const scale = network.getScale();
+    network.moveTo({ scale: scale * 0.75 });
+  });
+
+  document.getElementById("btn-reset").addEventListener("click", () => {
+    network.fit({ animation: true });
+  });
+
+  document.getElementById("btn-fullscreen").addEventListener("click", () => {
+    const wrapper = document.getElementById("graph-wrapper");
+    if (!document.fullscreenElement) {
+      wrapper.requestFullscreen().catch(err => alert("Fullscreen error: " + err.message));
+    } else {
+      document.exitFullscreen();
+    }
+  });
+});
+</script>
+{% endblock %}

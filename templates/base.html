@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}MovieVerse - AI Movie Recommendation Platform{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}" />
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-movieverse">
+  {% if current_user.is_authenticated and request.endpoint not in ['auth.login', 'auth.register'] %}
+  <!-- Dashboard Navbar -->
+  <nav class="navbar navbar-expand-lg sticky-top navbar-dark glass-nav">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand d-flex align-items-center me-4" href="{{ url_for('main.home') }}">
+        <span class="logo-text"><span class="text-pink">Movie</span><span class="text-gradient">Verse</span></span>
+      </a>
+      <button class="navbar-toggler border-0 text-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'main.home' %}active{% endif %}" href="{{ url_for('main.home') }}"><i class="fa-solid fa-house me-1"></i> Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'main.search' %}active{% endif %}" href="{{ url_for('main.search') }}"><i class="fa-solid fa-magnifying-glass me-1"></i> Search</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'main.recommendations' %}active{% endif %}" href="{{ url_for('main.recommendations') }}"><i class="fa-solid fa-wand-magic-sparkles me-1"></i> Recommendations</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'main.graph_view' %}active{% endif %}" href="{{ url_for('main.graph_view') }}"><i class="fa-solid fa-diagram-project me-1"></i> Graph</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'main.about' %}active{% endif %}" href="{{ url_for('main.about') }}"><i class="fa-solid fa-circle-info me-1"></i> About</a>
+          </li>
+        </ul>
+
+        <div class="d-flex align-items-center gap-3">
+          <!-- Notification Bell -->
+          <div class="dropdown">
+            <button class="btn btn-icon-glass text-light position-relative" type="button" id="notifDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-regular fa-bell"></i>
+              <span class="position-absolute top-0 start-100 translate-middle p-1 bg-pink border border-light rounded-circle">
+                <span class="visually-hidden">New notifications</span>
+              </span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end glass-dropdown text-light" aria-labelledby="notifDropdown">
+              <li><h6 class="dropdown-header text-pink">Notifications</h6></li>
+              <li><a class="dropdown-item text-light small" href="{{ url_for('main.recommendations') }}">✨ 3 New recommendations for you</a></li>
+              <li><a class="dropdown-item text-light small" href="{{ url_for('main.graph_view') }}">🎬 Dune Part 2 added to Graph</a></li>
+            </ul>
+          </div>
+
+          <!-- Profile Avatar & Username Dropdown -->
+          <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-light" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              <div class="user-avatar me-2"><i class="fa-solid fa-user"></i></div>
+              <span class="fw-semibold small text-light me-1">{{ current_user.username if current_user.username else 'Cinephile' }}</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end glass-dropdown text-light shadow-lg" aria-labelledby="profileDropdown">
+              <li><a class="dropdown-item text-light small" href="{{ url_for('main.profile') }}"><i class="fa-solid fa-user me-2 text-pink"></i> My Profile</a></li>
+              <li><a class="dropdown-item text-light small" href="#" data-bs-toggle="modal" data-bs-target="#settingsModal"><i class="fa-solid fa-gear me-2 text-purple"></i> Settings</a></li>
+              <li><hr class="dropdown-divider border-secondary border-opacity-25"></li>
+              <li><a class="dropdown-item text-danger small" href="{{ url_for('auth.logout') }}"><i class="fa-solid fa-right-from-bracket me-2"></i> Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  {% endif %}
+
+  <!-- Flash Messages -->
+  <div class="container-fluid px-4 mt-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show glass-card text-light border-0" role="alert">
+            <i class="fa-solid fa-circle-info me-2 text-{{ category }}"></i> {{ message }}
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <!-- Main content -->
+  <main class="main-wrapper container-fluid px-4 py-3">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% if current_user.is_authenticated and request.endpoint not in ['auth.login', 'auth.register'] %}
+  <!-- Footer -->
+  <footer class="movieverse-footer mt-5 py-4 border-top border-secondary border-opacity-10">
+    <div class="container text-center">
+      <div class="d-flex justify-content-center align-items-center gap-4 mb-3">
+        <span class="logo-text small"><span class="text-pink">Movie</span><span class="text-gradient">Verse</span></span>
+        <a href="{{ url_for('main.about') }}" class="text-secondary small text-decoration-none">About</a>
+        <a href="#" class="text-secondary small text-decoration-none">Privacy Policy</a>
+        <a href="#" class="text-secondary small text-decoration-none">Terms of Service</a>
+      </div>
+      <p class="text-muted small mb-0">© 2026 MovieVerse. All rights reserved. Powered by CognoDB & Knowledge Graphs.</p>
+    </div>
+  </footer>
+
+  <!-- Settings Modal -->
+  <div class="modal fade" id="settingsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content glass-card text-light">
+        <div class="modal-header border-secondary border-opacity-25">
+          <h5 class="modal-title fw-bold"><i class="fa-solid fa-gear text-purple me-2"></i>Account Settings</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label text-secondary small">Theme Preference</label>
+            <select class="form-select bg-dark text-light border-secondary">
+              <option selected>Netflix Dark Cinematic (Default)</option>
+              <option>Midnight Purple Glow</option>
+              <option>Neon Blue Cyberpunk</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-secondary small">Recommendation Engine</label>
+            <select class="form-select bg-dark text-light border-secondary">
+              <option selected>CognoDB Knowledge Graph Neural Network</option>
+              <option>Content Similarity Hybrid</option>
+            </select>
+          </div>
+          <div class="form-check form-switch mb-3">
+            <input class="form-check-input" type="checkbox" id="autoPlayTrailer" checked>
+            <label class="form-check-label text-light small" for="autoPlayTrailer">Autoplay movie trailers on hover</label>
+          </div>
+        </div>
+        <div class="modal-footer border-secondary border-opacity-25">
+          <button type="button" class="btn btn-outline-glass btn-sm" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-gradient-highlight btn-sm" data-bs-dismiss="modal">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
